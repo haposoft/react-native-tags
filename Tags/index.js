@@ -16,7 +16,11 @@ class Tags extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const { initialTags = [], initialText = " " } = props;
+    let initialTags = [];
+    const { listTags = [], initialText = " " } = props;
+    for (let tag of listTags) {
+      initialTags.push("#" + tag.name.charAt(0).toUpperCase() + tag.name.slice(1));
+    }
 
     this.setState({
       tags: initialTags,
@@ -100,7 +104,7 @@ class Tags extends React.Component {
                   },
                   () => {
                     this.props.onChangeTags &&
-                      this.props.onChangeTags(this.state.tags);
+                    this.props.onChangeTags(this.state.tags);
                     onTagPress && onTagPress(index, tag, e, true);
                   }
                 );
@@ -133,6 +137,7 @@ class Tags extends React.Component {
 }
 
 Tags.defaultProps = {
+  listTags: [],
   initialTags: [],
   initialText: " ",
   createTagOnString: [",", " "],
@@ -146,6 +151,7 @@ Tags.defaultProps = {
 };
 
 Tags.propTypes = {
+  listTags: PropTypes.arrayOf(PropTypes.object),
   initialText: PropTypes.string,
   initialTags: PropTypes.arrayOf(PropTypes.string),
   createTagOnString: PropTypes.array,
